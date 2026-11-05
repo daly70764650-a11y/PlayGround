@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090b12">
+  <title>Midnight at the Gate — The Last Hour</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Midnight at the Gate home"><span class="brand-mark">✦</span><span>MIDNIGHT <i>AT THE GATE</i></span></a>
+      <div class="top-status"><span class="live-dot"></span><span id="statusLabel">THE NIGHT IS WAITING</span></div>
+      <button class="icon-button" id="soundToggle" aria-label="Toggle voice narration" title="Voice narration">◖))</button>
+    </header>
+
+    <section class="intro" id="intro">
+      <div class="intro-copy">
+        <p class="eyebrow"><span></span> AN ORIGINAL HAUNTED-HOUR BOARD GAME</p>
+        <h1>One hour.<br><em>No way back.</em></h1>
+        <p class="intro-text">The gate has opened. Cross the midnight board, collect the scattered sigils, and reach the iron gate before the last chime. But listen closely—the Keeper has plans for you.</p>
+        <div class="intro-details"><span>◷ &nbsp;60 MINUTES</span><span>✧ &nbsp;2–4 PLAYERS</span><span>♜ &nbsp;ONE SHARED BOARD</span></div>
+        <button class="primary-button" id="beginBtn">ENTER THE NIGHT <span>↗</span></button>
+        <div class="fine-print">A complete, original tabletop-inspired experience. Best played with the lights low.</div>
+      </div>
+      <div class="intro-art" aria-hidden="true">
+        <div class="moon"></div><div class="art-halo"></div>
+        <div class="art-gate"><div class="gate-arch"><div class="gate-bars"></div><div class="gate-shadow"></div></div></div>
+        <div class="art-ground"></div>
+        <div class="art-card"><span>THE LAST HOUR</span><strong>01:00:00</strong><small>UNTIL THE GATE CLOSES</small><i>✦</i></div>
+        <div class="art-sigil">✧</div>
+      </div>
+    </section>
+
+    <section class="game" id="game" hidden>
+      <div class="game-heading"><div><p class="eyebrow"><span></span> THE MIDNIGHT BOARD</p><h2>Make your move.</h2></div><div class="timer-wrap"><span class="timer-label">TIME UNTIL THE GATE CLOSES</span><div class="timer" id="timer">60:00</div><div class="timer-track"><span id="timerProgress"></span></div></div></div>
+      <div class="game-layout">
+        <section class="board-panel">
+          <div class="board-topline"><span class="board-name"><b>✦</b> THE GLOAMING PATH</span><span class="round-label" id="roundLabel">ROUND 1</span></div>
+          <div class="board-wrap"><canvas id="board" aria-label="Three dimensional game board"></canvas><div class="board-stamp">THE<br>LAST<br>HOUR</div><div class="turn-banner" id="turnBanner">YOUR TURN</div></div>
+          <div class="board-legend"><span><i class="legend-dot sigil"></i> Sigil</span><span><i class="legend-dot key"></i> Key</span><span><i class="legend-dot omen"></i> Omen</span><span><i class="legend-dot keeper"></i> Keeper</span></div>
+        </section>
+        <aside class="side-panel">
+          <div class="players-card"><div class="section-title">THE PLAYERS <span id="playersCount">02</span></div><div id="playersList"></div></div>
+          <div class="active-card" id="activeCard">
+            <div class="active-top"><span class="avatar" id="activeAvatar">✦</span><div><span class="muted-label">IN THE SPOTLIGHT</span><strong id="activeName">Player One</strong></div><span class="turn-number" id="turnNumber">01</span></div>
+            <div class="inventory"><div><span class="inventory-icon">✧</span><strong id="sigilCount">0</strong><small>SIGILS</small></div><div><span class="inventory-icon key-icon">⚿</span><strong id="keyCount">0</strong><small>KEYS</small></div><div><span class="inventory-icon">◈</span><strong id="omenCount">0</strong><small>OMENS</small></div></div>
+            <div class="divider"></div><p class="turn-hint" id="turnHint">Roll the die to begin your turn.</p>
+            <button class="roll-button" id="rollBtn"><span class="die-icon" id="dieIcon">⚄</span><span>ROLL THE DIE</span><i>↗</i></button>
+            <div class="action-row"><button class="secondary-button" id="useKeyBtn" disabled>USE A KEY</button><button class="secondary-button" id="voiceBtn">VOICE <span id="voiceState">ON</span></button></div>
+          </div>
+          <div class="omen-card"><div class="section-title">THE KEEPER'S WHISPER <span class="whisper-mark">〝</span></div><p id="whisperText">“I can hear the dice dreaming…”</p><span id="whisperBy">— THE KEEPER</span></div>
+        </aside>
+      </div>
+      <div class="bottom-row"><div class="log-card"><div class="section-title">NIGHT LOG <span>● LIVE</span></div><div id="logList" class="log-list"></div></div><div class="rules-card"><div class="rules-emblem">♜</div><div><strong>THE WAY OUT</strong><p>Gather <b>3 keys</b> and reach the gate, or be the one holding the most sigils when the hour ends.</p></div></div></div>
+      <footer class="game-footer"><span>AN ORIGINAL GAME OF CHANCE & NERVE</span><button id="restartBtn">START A NEW NIGHT ↗</button></footer>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="setupModal" hidden><div class="modal setup-modal"><button class="modal-close" id="closeSetup">×</button><p class="eyebrow"><span></span> THE NIGHT IS YOURS</p><h2>Who dares enter?</h2><p class="modal-copy">Choose your party. The Keeper is always waiting.</p><div class="setup-options"><label>PLAYERS<select id="playerSelect"><option value="2">2 players</option><option value="3">3 players</option><option value="4">4 players</option></select></label><label>YOUR NAME<input id="playerName" maxlength="14" value="Mara" autocomplete="off"></label></div><div class="setup-note"><span>✦</span><p>You play against the Keeper's clock. Other players are guided by the night itself. Collect sigils, steal keys, and make it to the gate.</p></div><button class="primary-button modal-start" id="startGameBtn">LIGHT THE FIRST CANDLE <span>↗</span></button></div></div>
+  <div class="modal-backdrop" id="eventModal" hidden><div class="modal event-modal"><div class="event-symbol" id="eventSymbol">✧</div><p class="eyebrow" id="eventType">THE KEEPER INTERRUPTS</p><h2 id="eventTitle">A voice from the dark</h2><p class="event-copy" id="eventCopy"></p><div class="order-box" id="orderBox"></div><button class="primary-button" id="eventContinue">I HEARD YOU <span>↗</span></button></div></div>
+  <div class="modal-backdrop" id="endModal" hidden><div class="modal event-modal"><div class="event-symbol">✦</div><p class="eyebrow">THE LAST CHIME</p><h2 id="endTitle">The gate is sealed.</h2><p class="event-copy" id="endCopy"></p><button class="primary-button" id="endRestart">PLAY ANOTHER NIGHT <span>↗</span></button></div></div>
+  <script src="game.js"></script>
+</body>
+</html>
