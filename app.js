@@ -13,7 +13,9 @@ const $ = s => document.querySelector(s);
 const els = {
   home:$('#home-team'), away:$('#away-team'), score:$('#score'), wickets:$('#wickets'), overs:$('#overs'), target:$('#target'), rate:$('#run-rate'), required:$('#required'), inningLabel:$('#innings-label'), battingName:$('#batting-name'), commentary:$('#commentary'), byline:$('#commentary-byline'), umpire:$('#umpire-call'), umpireIcon:$('#umpire-icon'), overDisplay:$('#over-display'), ground:$('#ground-frame'), groundCall:$('#ground-call-text'), chip:$('#ground-chip'), chipText:$('#chip-text'), controls:$('#shot-controls'), inningsControls:$('#innings-controls'), title:$('#control-title'), hint:$('#control-hint'), kicker:$('#control-kicker'), start:$('#start-game'), next:$('#next-innings'), toast:$('#toast'), status:$('#match-status')
 };
-let format='T20', women=false, match=null, deliveryTimer=null, toastTimer=null, audio=null, musicTimer=null, soundOn=false;
+let format='T20', women=false, match=null, deliveryTimer=null, toastTimer=null, audio=null, musicTimer=null, soundOn=false, crowdSource=null, crowdGain=null;
+const radioBylines=['— THE RADIO BOX','— FROM THE BOUNDARY','— A VOICE FROM THE STAND'];
+function radioByline(){return radioBylines[rInt(radioBylines.length)]}
 const rInt = n => Math.floor(Math.random()*n);
 function info(name){return teams[format].find(t=>t.name===name)||teams.T20.find(t=>t.name===name)}
 function renderTeams(keep=true){
@@ -58,7 +60,7 @@ function setupMatch(){
   els.controls.classList.remove('hidden');els.inningsControls.classList.add('hidden');els.controls.innerHTML='';makeNextButton();
   els.kicker.textContent='AT THE CREASE';els.title.textContent='Ready when you are.';els.hint.textContent='Tap a shot as the ball reaches the batter. Timing is everything.';
   els.ground.classList.remove('hit','wicket','boundary','celebrate','delivering');els.groundCall.textContent='YOUR INNINGS';
-  updateScore();setCommentary(`The ${women?'women’s':'men’s'} ${match.homeTeam} are out in the middle. It’s a lovely day for cricket.`, 'Play on!','☞');showChip('READY TO PLAY');
+  updateScore();setCommentary(`The ${women?'women’s':'men’s'} ${match.homeTeam} XI take the field. Settle in — we’ve got cricket to enjoy.`, 'Play on!','☞',radioByline());showChip('READY TO PLAY');
   lockSetup(true);
 }
 function lockSetup(locked){document.querySelectorAll('.segment,#squad-toggle').forEach(b=>b.disabled=locked);els.home.disabled=locked;els.away.disabled=locked;}
@@ -68,7 +70,7 @@ function startDelivery(){
   match.deliveryStarted=Date.now();match.phase='delivery';els.start.disabled=true;
   els.ground.classList.remove('hit','wicket','boundary','celebrate');void els.ground.offsetWidth;els.ground.classList.add('delivering');
   els.title.textContent='Here comes the ball…';els.hint.textContent='Get your shot ready — tap when it reaches the batter.';els.kicker.textContent='BOWLER IN';els.groundCall.textContent='BOWLER IN';
-  setCommentary(['A little shuffle at the top of the mark…','The bowler turns at the end of the run-up.','The field is set. Here we go!'][rInt(3)],'Play on!','☞');playSound('bowl');
+  setCommentary(['A little shuffle at the top of the mark… here comes the bowler.','The field is set, the batter is ready, and away we go.','A measured run-up now — watch this one closely.'][rInt(3)],'Play on!','☞',radioByline());playSound('bowl');
   deliveryTimer=setTimeout(()=>{
     if(!match||match.phase!=='delivery')return;
     match.phase='batting';
@@ -103,12 +105,13 @@ function resolveShot(shot,timing='perfect'){
   else if(runs>0){els.ground.classList.add('hit');playSound('bat');}
   const timingText=late?'The batter is beaten!':timing==='perfect'?'Beautifully timed!':timing==='good'?'A decent connection!':'A little mistimed!';
   if(wicket){
-    const messages=kind==='caught'?['CAUGHT! What a grab in the deep!','What a catch! The fielder hangs on!','A sharp catch — the batter has to go!']:['Bowled him! The stumps are rattled!','Gone! The bowler has found a way through.','Cleaned up! A big moment in the match.'];
-    setCommentary(messages[rInt(messages.length)],kind==='caught'?'OUT!':'BOWLED!','☝','— THE UMPIRE');els.groundCall.textContent='OUT!';
-  }else if(runs===6){setCommentary(['Up, up and away! That is a monster six!','That has gone all the way! Marvellous!','Out of the backyard! What a hit!'][rInt(3)],'SIX!','🙌','— THE UMPIRE');els.groundCall.textContent='SIX!';els.ground.classList.add('celebrate');}
-  else if(runs===4){setCommentary(['Cracked away to the fence! Four runs!','Lovely stroke — races away for four!','Beats the fielders. What a shot!'][rInt(3)],'FOUR!','✋','— THE UMPIRE');els.groundCall.textContent='FOUR!';els.ground.classList.add('celebrate');}
-  else if(runs){setCommentary(`${timingText} Quick feet, and they’ll come back for ${runs===1?'one':runs+' runs'}.`,'One run','☞');els.groundCall.textContent=`${runs} RUN${runs>1?'S':''}`;}
-  else{setCommentary('No run. A tidy bit of bowling, that.','Dot ball','☞');els.groundCall.textContent='DOT BALL';playSound('dot');}
+    const messages=kind==='caught'?['Howzat! A sharp appeal — and the umpire raises the finger. Taken in the deep!','Caught! The fielder held on, and the finger goes up.','A neat catch, a loud appeal, and that is out!']:kind==='edge'?['Howzat! A thin edge and safely pouched — gone!','A nick, a fine catch, and the appeal is answered. Out!']:['Howzat! The stumps are rattled — bowled!','The timber is disturbed. The umpire has no doubt: bowled!','Clean bowled! A big moment in the match.'];
+    const call=kind==='caught'||kind==='edge'?'OUT! CAUGHT!':'OUT! BOWLED!';
+    setCommentary(messages[rInt(messages.length)],call,'☝',radioByline());els.groundCall.textContent='OUT!';playSound('cheer');
+  }else if(runs===6){setCommentary(['Up it goes — and that’s a six! Marvellous hitting.','That’s a mighty six, right out of the ground!','A towering hit! Six all the way — marvellous!'][rInt(3)],'SIX!','🙌',radioByline());els.groundCall.textContent='SIX!';els.ground.classList.add('celebrate');playSound('cheer');}
+  else if(runs===4){setCommentary(['That’s a four! A beautifully placed stroke to the rope.','Cracked away — and that’s four runs!','Marvellous timing; it races away for four!'][rInt(3)],'FOUR!','✋',radioByline());els.groundCall.textContent='FOUR!';els.ground.classList.add('celebrate');playSound('cheer');}
+  else if(runs){setCommentary(`${timingText} Quick feet, and they’ll come back for ${runs===1?'one':runs+' runs'}.`,'One run','☞',radioByline());els.groundCall.textContent=`${runs} RUN${runs>1?'S':''}`;}
+  else{setCommentary('No run. A tidy bit of bowling, and the fielders keep it quiet.','Play on','☞',radioByline());els.groundCall.textContent='DOT BALL';playSound('dot');}
   els.title.textContent=wicket?'A wicket falls!':runs>=4?`${runs===6?'Six':'Four'}! That’s the way.`:runs?`${runs} run${runs>1?'s':''} on the board.`:'Dot ball.';
   els.hint.textContent=timingText;els.kicker.textContent=wicket?'THAT’S CRICKET':'THE SCORE MOVES ON';
   els.controls.innerHTML='';makeNextButton();checkInnings();
@@ -129,7 +132,7 @@ function checkInnings(){
     match.phase='inningsEnd';els.controls.classList.add('hidden');els.inningsControls.classList.remove('hidden');
     $('#next-innings').innerHTML='<span class="shot-glyph">↻</span><span><b>START 2ND INNINGS</b><small>CHASE THE TARGET</small></span><span class="button-arrow">↗</span>';
     els.title.textContent='Innings break.';els.hint.textContent=`${match.awayTeam} need ${match.first+1} to win. Twenty overs each, backyard rules.`;els.kicker.textContent='TIME TO CHANGE SIDES';
-    els.groundCall.textContent='INNINGS BREAK';setCommentary(`That’s the end of the first innings. ${match.awayTeam} need ${match.first+1} to take the match.`, 'Change of innings','↻');
+    els.groundCall.textContent='INNINGS BREAK';setCommentary(`That’s the end of the first innings. ${match.awayTeam} need ${match.first+1} to take the match.`, 'Change of innings','↻',radioByline());
     return;
   }
   if(match.innings===2&&(match.second>match.first||balls>=120||wickets>=10)){
@@ -141,7 +144,7 @@ function beginSecondInnings(){
   match.innings=2;match.phase='ready';els.inningsControls.classList.add('hidden');els.controls.classList.remove('hidden');els.controls.innerHTML='';makeNextButton();
   els.ground.classList.remove('hit','wicket','boundary','celebrate');els.groundCall.textContent='CHASE ON';updateScore();
   els.title.textContent='The chase is on.';els.hint.textContent=`${match.awayTeam} need ${match.first+1} to win. You’re batting now.`;els.kicker.textContent='SECOND INNINGS';
-  setCommentary(`A target of ${match.first+1}. Can ${match.awayTeam} get there? It’s all to play for.`, 'Play on!','☞');
+  setCommentary(`A target of ${match.first+1}. Can ${match.awayTeam} get there? It’s all to play for.`, 'Play on!','☞',radioByline());
 }
 function finishMatch(){
   match.phase='finished';const homeWon=match.second>match.first, tied=match.second===match.first;
@@ -159,6 +162,27 @@ function resetMatch(){
 }
 function ensureAudio(){if(!audio){const Ctx=window.AudioContext||window.webkitAudioContext;if(Ctx)audio=new Ctx();}if(audio?.state==='suspended')audio.resume();}
 function tone(freq,duration=.16,type='sine',volume=.035,when=0){if(!audio)return;const osc=audio.createOscillator(),gain=audio.createGain();osc.type=type;osc.frequency.value=freq;gain.gain.setValueAtTime(.0001,audio.currentTime+when);gain.gain.exponentialRampToValueAtTime(volume,audio.currentTime+when+.015);gain.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+when+duration);osc.connect(gain);gain.connect(audio.destination);osc.start(audio.currentTime+when);osc.stop(audio.currentTime+when+duration+.03)}
+function startCrowd(){
+  if(!audio||crowdSource)return;
+  const buffer=audio.createBuffer(1,audio.sampleRate*2,audio.sampleRate),data=buffer.getChannelData(0);
+  for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.7;
+  const source=audio.createBufferSource(),filter=audio.createBiquadFilter(),gain=audio.createGain();
+  source.buffer=buffer;source.loop=true;filter.type='lowpass';filter.frequency.value=720;gain.gain.value=.018;
+  source.connect(filter);filter.connect(gain);gain.connect(audio.destination);source.start();crowdSource=source;crowdGain=gain;
+  [118,151,187,224].forEach((freq,i)=>{const voice=audio.createOscillator(),level=audio.createGain();voice.type='sine';voice.frequency.value=freq+(Math.random()*8-4);level.gain.value=.11;voice.connect(level);level.connect(gain);voice.start();crowdNodes.push(voice,level)});
+}
+const crowdNodes=[];
+function stopCrowd(){if(crowdSource){try{crowdSource.stop()}catch{}crowdSource.disconnect();crowdSource=null}crowdNodes.forEach(node=>{try{node.stop?.()}catch{}node.disconnect()});crowdNodes.length=0;crowdGain=null}
+function crowdCheer(){
+  if(!soundOn||!audio)return;
+  const length=Math.floor(audio.sampleRate*.95),buffer=audio.createBuffer(1,length,audio.sampleRate),data=buffer.getChannelData(0);
+  for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*(1-i/length);
+  const source=audio.createBufferSource(),filter=audio.createBiquadFilter(),gain=audio.createGain();
+  source.buffer=buffer;filter.type='bandpass';filter.frequency.value=1050;filter.Q.value=.55;
+  gain.gain.setValueAtTime(.0001,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.045,audio.currentTime+.12);gain.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+.95);
+  source.connect(filter);filter.connect(gain);gain.connect(audio.destination);source.start();source.stop(audio.currentTime+1);
+  [330,392,466].forEach((freq,i)=>tone(freq+i*5,.7,'sawtooth',.008,i*.025));
+}
 function playSound(kind){if(!soundOn)return;ensureAudio();if(!audio)return;
   if(kind==='bowl'){tone(180,.2,'triangle',.022);tone(120,.15,'sine',.015,.2)}
   if(kind==='bat'){tone(330,.12,'triangle',.06);tone(760,.08,'sine',.018,.025)}
@@ -166,11 +190,12 @@ function playSound(kind){if(!soundOn)return;ensureAudio();if(!audio)return;
   if(kind==='six'){[523,659,784,1047].forEach((f,i)=>tone(f,.38,'triangle',.035,i*.09));}
   if(kind==='wicket'){tone(250,.2,'square',.025);tone(165,.36,'triangle',.04,.15)}
   if(kind==='dot'){tone(270,.07,'sine',.012)}
+  if(kind==='cheer')crowdCheer();
 }
 function musicLoop(){if(!soundOn)return;ensureAudio();if(!audio)return;[392,494,587,494].forEach((n,i)=>tone(n,.22,'sine',.007,i*.2));musicTimer=setTimeout(musicLoop,3600)}
 $('#sound-toggle').addEventListener('click',()=>{
   soundOn=!soundOn;$('#sound-toggle').setAttribute('aria-pressed',String(soundOn));$('.sound-label').textContent=soundOn?'SOUND ON':'SOUND OFF';$('.sound-icon').textContent=soundOn?'♫':'♪';
-  if(soundOn){ensureAudio();clearTimeout(musicTimer);musicLoop();showToast('A little backyard soundtrack, coming right up.');}else{clearTimeout(musicTimer);showToast('Sound effects and music off.');}
+  if(soundOn){ensureAudio();startCrowd();clearTimeout(musicTimer);musicLoop();showToast('Crowd ambience and cricket sounds are on.');}else{clearTimeout(musicTimer);stopCrowd();showToast('Crowd and sound effects off.');}
 });
 document.querySelectorAll('.segment').forEach(b=>b.addEventListener('click',()=>setFormat(b.dataset.format)));
 $('#squad-toggle').addEventListener('click',e=>{women=!women;e.currentTarget.setAttribute('aria-pressed',String(women));updateTeamVisuals();showToast(`${women?'Women’s':'Men’s'} squads selected — same classic game, all our players.`)});
