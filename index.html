@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#101a20" />
+  <title>Red Sand, Red Thread — A Ghan Mystery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main id="app">
+    <section class="intro-screen" id="introScreen">
+      <div class="intro-art">
+        <div class="intro-sun"></div><div class="intro-ridge ridge-one"></div><div class="intro-ridge ridge-two"></div>
+        <div class="intro-train"><span></span><span></span><span></span><span></span></div>
+        <div class="intro-grain"></div>
+        <div class="intro-art-caption"><span class="eyebrow">A SOUTHERN GOTHIC MYSTERY</span><span>THE GHAN · 1936</span></div>
+      </div>
+      <div class="intro-copy">
+        <div class="brand-mark"><span class="brand-symbol">✳</span> FIELD NOTES <span class="brand-rule"></span> CASE 01</div>
+        <h1>Red Sand,<br><em>Red Thread.</em></h1>
+        <p class="intro-deck">A murder on the long road north. A train full of carefully kept secrets. One detective who knows that the land always remembers.</p>
+        <div class="intro-byline"><span class="byline-icon">JM</span><span><b>Senior Detective Jonah Marr</b><small>First Nations · Major Crime · 42</small></span></div>
+        <button class="primary-button" id="beginButton">BOARD THE GHAN <span>→</span></button>
+        <p class="intro-note">A fictional mystery about observation, evidence, and connection to Country.<br>Sound and spoken dialogue are optional.</p>
+      </div>
+    </section>
+
+    <section class="game-screen hidden" id="gameScreen">
+      <header class="topbar">
+        <a class="wordmark" href="#" aria-label="Field Notes"><span>✳</span> FIELD NOTES</a>
+        <div class="case-title"><span>CASE 01</span><b>RED SAND, RED THREAD</b></div>
+        <div class="top-actions"><button class="icon-button" id="soundButton" aria-label="Toggle sound" title="Toggle sound">♫ <span>SOUND OFF</span></button><button class="icon-button" id="voiceButton" aria-label="Toggle spoken dialogue" title="Toggle spoken dialogue">◖ <span>VOICE OFF</span></button><button class="icon-button help-button" id="helpButton" aria-label="How to play">? <span>HOW TO PLAY</span></button></div>
+      </header>
+      <div class="game-layout">
+        <section class="case-main">
+          <div class="chapter-line"><span class="chapter-number" id="chapterNumber">01</span><div><span class="eyebrow" id="chapterKicker">THE DISCOVERY</span><h2 id="chapterTitle">A quiet carriage</h2></div><div class="progress-track"><i id="progressFill"></i></div><span class="chapter-progress" id="progressLabel">0 / 8 CLUES</span></div>
+          <div class="scene-wrap">
+            <div class="scene-heading"><span id="sceneLabel">SLEEPING CAR · COMPARTMENT 4</span><span class="scene-time">9:24 PM <i></i> NIGHT 1</span></div>
+            <div class="scene" id="scene">
+              <div class="scene-art" id="sceneArt" aria-hidden="true"></div>
+              <div class="scene-vignette"></div>
+              <div class="scene-caption"><span class="caption-marker">✳</span><span id="sceneCaption">The train rolls north through a darkening stretch of Country.</span></div>
+              <div id="hotspots" class="hotspots" aria-label="Search the scene"></div>
+              <div class="scene-instruction"><span class="pulse-dot"></span> SELECT THE GLOWING MARKERS TO SEARCH</div>
+            </div>
+          </div>
+          <div class="lower-row">
+            <div class="journal-card"><div class="card-label"><span>JONAH'S FIELD NOTES</span><span class="note-mark">✳</span></div><p id="journalText">Somebody on this train knows more than they're saying. Start with what the room can tell you.</p><div class="journal-footer"><span>PERSONAL NOTEBOOK</span><span id="noteCount">ENTRY 01</span></div></div>
+            <div class="location-card"><div class="card-label">MOVE THROUGH THE TRAIN</div><div class="location-buttons" id="locationButtons"></div></div>
+          </div>
+        </section>
+        <aside class="case-sidebar">
+          <div class="sidebar-tabs" role="tablist"><button class="side-tab active" data-tab="evidence" role="tab">EVIDENCE <span id="evidenceCount">0</span></button><button class="side-tab" data-tab="people" role="tab">PEOPLE <span>4</span></button><button class="side-tab" data-tab="deduce" role="tab">DEDUCE <span class="lock-indicator" id="deduceLock">•</span></button></div>
+          <div class="tab-panel active" id="evidencePanel"><div class="panel-intro"><span class="eyebrow">THE CASE FILE</span><h3>Collected evidence</h3><p>Every detail matters. Tap a piece of evidence to revisit your notes.</p></div><div class="evidence-list" id="evidenceList"></div><div class="empty-state" id="evidenceEmpty"><span>✳</span><b>The file is waiting.</b><p>Search each carriage and talk to everyone. Important details will find their way here.</p></div><div class="sidebar-footer"><span>CONFIDENTIAL · MAJOR CRIME</span><span>JM / 36</span></div></div>
+          <div class="tab-panel" id="peoplePanel"><div class="panel-intro"><span class="eyebrow">ON BOARD TONIGHT</span><h3>Passengers & crew</h3><p>Listen closely. A small contradiction can open a big door.</p></div><div class="people-list" id="peopleList"></div><div class="sidebar-footer"><span>INTERVIEWS ARE OPTIONAL</span><span>4 PERSONS</span></div></div>
+          <div class="tab-panel" id="deducePanel"><div class="panel-intro"><span class="eyebrow">PUT THE PIECES TOGETHER</span><h3>Make your case</h3><p>Build a theory from the facts, not the feeling.</p></div><div class="deduce-locked" id="deduceLocked"><div class="lock-icon">⌑</div><b>Evidence first.</b><p>Find at least 5 clues and speak with all three passengers to open your deduction board.</p><div class="unlock-progress"><span id="unlockProgress">0 / 5 clues</span><i><b id="unlockBar"></b></i></div></div><div id="deduceForm" class="deduce-form hidden"><label>WHO HAD A REASON?<select id="motiveSelect"><option value="">Choose a motive clue…</option><option value="blackmail">The torn letter</option><option value="inheritance">The missing valuables</option><option value="jealousy">The dinner argument</option></select></label><label>WHO HAD THE OPPORTUNITY?<select id="opportunitySelect"><option value="">Choose a timeline clue…</option><option value="mara">Mara's service log</option><option value="nell">Nell's vestibule sighting</option><option value="clock">The stopped watch</option></select></label><label>WHAT GIVES THEM AWAY?<select id="methodSelect"><option value="">Choose a physical clue…</option><option value="dust">Red dust on the boot</option><option value="thread">The blue silk thread</option><option value="tea">The untouched tea</option></select></label><button class="primary-button accuse-button" id="accuseButton">NAME THE KILLER <span>→</span></button><p class="deduce-hint" id="deduceHint">You need the torn letter, Nell's sighting, and the blue silk thread before you can make a sound accusation.</p></div><div class="sidebar-footer"><span>REASONABLE DOUBT: NONE</span><span>JM / 36</span></div></div>
+        </aside>
+      </div>
+      <div class="toast" id="toast" aria-live="polite"></div>
+    </section>
+
+    <div class="modal-backdrop hidden" id="modalBackdrop" role="dialog" aria-modal="true"><section class="modal" id="modal"><button class="modal-close" id="modalClose" aria-label="Close">×</button><div class="modal-content" id="modalContent"></div></section></div>
+    <div class="ending-screen hidden" id="endingScreen"></div>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
