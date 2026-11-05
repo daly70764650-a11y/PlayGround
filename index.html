@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#071b20" />
+  <title>COMMONWEALTH — Australia's trade game</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <main id="app">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Commonwealth home"><span class="brand-mark">C<span>✳</span></span><span>COMMONWEALTH<small>THE AUSTRALIAN TRADE GAME</small></span></a>
+      <div class="top-meta"><span class="live-dot"></span><span>TRADE DESK <b>LIVE</b></span><span class="top-divider"></span><span id="header-date">FY 2026–27</span><button class="icon-btn sound-toggle" title="Toggle sound" aria-label="Toggle sound">♫</button></div>
+    </header>
+
+    <section id="welcome" class="welcome-screen">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-line"></span> A STRATEGY GAME FOR A CHANGING NATION</p>
+        <h1>Trade is<br>never <em>just</em> trade.</h1>
+        <p class="hero-sub">Build a resilient Australia. Ride commodity booms, navigate climate shocks and global tension, and decide what we make here — and what we bring home.</p>
+        <div class="hero-stats"><div><b>22</b><span>trade routes</span></div><i></i><div><b>12</b><span>quarters</span></div><i></i><div><b>∞</b><span>ways to adapt</span></div></div>
+      </div>
+      <div class="setup-card">
+        <div class="card-head"><div><span class="section-kicker">01 / YOUR BRIEFING</span><h2>Set your course</h2></div><span class="radar">◎</span></div>
+        <label class="field-label" for="difficulty">AI opposition</label>
+        <div class="difficulty-options" role="group" aria-label="AI difficulty">
+          <button class="difficulty active" data-level="easy"><span>01</span><b>Steady</b><small>Room to learn</small></button>
+          <button class="difficulty" data-level="normal"><span>02</span><b>Balanced</b><small>A fair contest</small></button>
+          <button class="difficulty" data-level="hard"><span>03</span><b>Relentless</b><small>Every edge counts</small></button>
+        </div>
+        <label class="field-label mode-label">How will you play?</label>
+        <div class="mode-switch"><button class="mode-option active" data-mode="solo">◉ <span>Solo vs AI</span></button><button class="mode-option" data-mode="pass">♟ <span>Pass &amp; play</span></button></div>
+        <div class="brief-note"><span>✦</span><p><b>THE OBJECTIVE</b><br>Finish 12 quarters as Australia's most resilient trade portfolio. Wealth matters. So does what the country can actually rely on.</p></div>
+        <button id="start-game" class="primary-btn">OPEN THE TRADE DESK <span>↗</span></button>
+        <p class="setup-foot">A fictional strategy simulation inspired by Australia's trade profile.</p>
+      </div>
+      <div class="hero-foot"><span>26° 12′ S &nbsp; 133° 46′ E</span><span>AUSTRALIA / 2026</span><span>SCENARIO 01 — THE LONG GAME</span></div>
+    </section>
+
+    <section id="game" class="game-screen hidden">
+      <div class="game-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> THE TRADE DESK <span class="heading-slash">/</span> <span id="quarter-label">QUARTER 01 OF 12</span></p><h1>Australia, <em>in play.</em></h1></div><button id="help-btn" class="text-btn">HOW TO PLAY <span>↗</span></button></div>
+      <div class="game-layout">
+        <div class="board-column">
+          <div class="board-topline"><span><span class="live-dot"></span> CANBERRA EXCHANGE</span><span id="weather-line">◌ &nbsp; NATIONAL OUTLOOK: CLEAR</span></div>
+          <div class="board-wrap"><div id="board" class="board" aria-label="Australian trade game board"></div></div>
+          <div class="board-legend"><span><i class="legend-dot export-dot"></i> EXPORT</span><span><i class="legend-dot import-dot"></i> IMPORT</span><span><i class="legend-dot event-dot"></i> EVENT</span><span class="legend-note">◈ ROUTE CONDITIONS CHANGE EACH QUARTER</span></div>
+        </div>
+        <aside class="dashboard">
+          <div class="turn-card"><div class="turn-top"><span class="section-kicker">CURRENT BRIEFING</span><span id="turn-indicator" class="turn-chip">YOUR TURN</span></div><h2 id="turn-title">The floor is yours.</h2><p id="turn-message">Choose a trade action, then roll to move your portfolio around the country.</p><div class="turn-controls"><button id="trade-btn" class="secondary-btn">⇄ <span>MARKET</span></button><button id="policy-btn" class="secondary-btn">⚖ <span>POLICY</span></button><button id="roll-btn" class="roll-btn"><span class="die" id="die-one">⚀</span><span class="die" id="die-two">⚁</span><b>ROLL DICE</b><span class="roll-arrow">↗</span></button></div></div>
+          <div class="portfolio-card"><div class="panel-title"><span class="section-kicker">NATIONAL LEDGER</span><span id="portfolio-health" class="health-pill">● STABLE</span></div><div id="players-list" class="players-list"></div><div class="resilience"><div class="resilience-label"><span>SUPPLY RESILIENCE</span><b id="resilience-value">58%</b></div><div class="meter"><span id="resilience-meter"></span></div><small id="resilience-note">Import exposure is manageable.</small></div></div>
+          <div class="market-strip"><div class="market-title"><span class="section-kicker">WORLD MARKETS</span><span class="market-live"><i></i> OPEN</span></div><div id="market-ticker" class="market-ticker"></div></div>
+          <div class="log-card"><div class="panel-title"><span class="section-kicker">WIRE / LATEST</span><button id="clear-log" class="clear-btn">CLEAR</button></div><div id="game-log" class="game-log"><p class="log-empty">Your briefings will appear here.</p></div></div>
+        </aside>
+      </div>
+      <div class="mobile-actionbar"><button id="mobile-market">⇄ Market</button><button id="mobile-roll">⚄ Roll dice</button><button id="mobile-policy">⚖ Policy</button></div>
+    </section>
+
+    <footer class="site-footer"><span>COMMONWEALTH <i>✳</i> STRATEGY FOR AN UNCERTAIN WORLD</span><span>NOT A FORECAST. A GAME.</span></footer>
+  </main>
+
+  <div id="modal-root" class="modal-root hidden" role="dialog" aria-modal="true"></div>
+  <div id="toast" class="toast" aria-live="polite"></div>
+  <script src="game.js"></script>
+</body>
+</html>
