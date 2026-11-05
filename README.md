@@ -16,3 +16,9 @@
 - 👤 [Explore the creator's projects](https://go.ondev.store/daly70764650-a11y).
 - 🌍 [Create with OMGithub](https://go.ondev.store/).
 <!-- omgithub:readme:end -->
+
+## Last One Out — Aussie Card Club
+
+A responsive, browser-playable card game featuring local AI matches, pass-and-play, Storm & Scrub two-sided decks, stackable penalties, optional bust rules, synthesized background audio, local stats, and a three-round local tournament. Player stats and leaderboard data are stored in the browser.
+
+Online multiplayer and shared/global leaderboards require a backend and are not connected in this build. The local tournament and leaderboard are device-only.
