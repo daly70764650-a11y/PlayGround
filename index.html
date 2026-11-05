@@ -16,7 +16,7 @@
   <main id="app">
     <header class="topbar">
       <a class="brand" href="#" aria-label="Commonwealth home"><span class="brand-mark">C<span>✳</span></span><span>COMMONWEALTH<small>THE AUSTRALIAN TRADE GAME</small></span></a>
-      <div class="top-meta"><span class="live-dot"></span><span>TRADE DESK <b>LIVE</b></span><span class="top-divider"></span><span id="header-date">FY 2026–27</span><button class="icon-btn sound-toggle" title="Toggle sound" aria-label="Toggle sound">♫</button></div>
+      <div class="top-meta"><span class="live-dot"></span><span>TRADE DESK <b>LIVE</b></span><span class="top-divider"></span><span id="header-date">FY 2026–27</span><button class="icon-btn sound-toggle" title="Toggle sound effects" aria-label="Toggle sound effects">♫</button><button class="icon-btn music-toggle" title="Toggle background music" aria-label="Toggle background music">♪</button><button class="icon-btn voice-toggle" title="Toggle spoken commentary" aria-label="Toggle spoken commentary">◖</button></div>
     </header>
 
     <section id="welcome" class="welcome-screen">
@@ -28,14 +28,15 @@
       </div>
       <div class="setup-card">
         <div class="card-head"><div><span class="section-kicker">01 / YOUR BRIEFING</span><h2>Set your course</h2></div><span class="radar">◎</span></div>
-        <label class="field-label" for="difficulty">AI opposition</label>
-        <div class="difficulty-options" role="group" aria-label="AI difficulty">
+        <label id="difficulty-label" class="field-label" for="difficulty">AI opposition</label>
+        <div id="difficulty-options" class="difficulty-options" role="group" aria-label="AI difficulty">
           <button class="difficulty active" data-level="easy"><span>01</span><b>Steady</b><small>Room to learn</small></button>
           <button class="difficulty" data-level="normal"><span>02</span><b>Balanced</b><small>A fair contest</small></button>
           <button class="difficulty" data-level="hard"><span>03</span><b>Relentless</b><small>Every edge counts</small></button>
         </div>
         <label class="field-label mode-label">How will you play?</label>
-        <div class="mode-switch"><button class="mode-option active" data-mode="solo">◉ <span>Solo vs AI</span></button><button class="mode-option" data-mode="pass">♟ <span>Pass &amp; play</span></button></div>
+        <div class="mode-switch"><button class="mode-option active" data-mode="solo">◉ <span>Solo vs AI</span></button><button class="mode-option" data-mode="pass">♟ <span>Pass &amp; play</span></button><button class="mode-option" data-mode="online">◎ <span>Online room</span></button></div>
+        <div class="online-setup hidden" id="online-setup"><label class="field-label" for="player-name">Treasurer name</label><input id="player-name" maxlength="24" value="Treasurer" autocomplete="nickname"><div class="online-actions"><button id="create-room" class="secondary-btn">CREATE ROOM</button><input id="room-code" maxlength="6" placeholder="ROOM CODE" aria-label="Room code"><button id="join-room" class="secondary-btn">JOIN</button></div><p id="room-help" class="setup-foot">Create a room and share its six-character code. Both players need the same running server.</p></div>
         <div class="brief-note"><span>✦</span><p><b>THE OBJECTIVE</b><br>Finish 12 quarters as Australia's most resilient trade portfolio. Wealth matters. So does what the country can actually rely on.</p></div>
         <button id="start-game" class="primary-btn">OPEN THE TRADE DESK <span>↗</span></button>
         <p class="setup-foot">A fictional strategy simulation inspired by Australia's trade profile.</p>
@@ -47,14 +48,14 @@
       <div class="game-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> THE TRADE DESK <span class="heading-slash">/</span> <span id="quarter-label">QUARTER 01 OF 12</span></p><h1>Australia, <em>in play.</em></h1></div><button id="help-btn" class="text-btn">HOW TO PLAY <span>↗</span></button></div>
       <div class="game-layout">
         <div class="board-column">
-          <div class="board-topline"><span><span class="live-dot"></span> CANBERRA EXCHANGE</span><span id="weather-line">◌ &nbsp; NATIONAL OUTLOOK: CLEAR</span></div>
+          <div class="board-topline"><span><span class="live-dot"></span> CANBERRA EXCHANGE <span id="connection-status"></span></span><span id="weather-line">◌ &nbsp; NATIONAL OUTLOOK: CLEAR</span></div>
           <div class="board-wrap"><div id="board" class="board" aria-label="Australian trade game board"></div></div>
           <div class="board-legend"><span><i class="legend-dot export-dot"></i> EXPORT</span><span><i class="legend-dot import-dot"></i> IMPORT</span><span><i class="legend-dot event-dot"></i> EVENT</span><span class="legend-note">◈ ROUTE CONDITIONS CHANGE EACH QUARTER</span></div>
         </div>
         <aside class="dashboard">
           <div class="turn-card"><div class="turn-top"><span class="section-kicker">CURRENT BRIEFING</span><span id="turn-indicator" class="turn-chip">YOUR TURN</span></div><h2 id="turn-title">The floor is yours.</h2><p id="turn-message">Choose a trade action, then roll to move your portfolio around the country.</p><div class="turn-controls"><button id="trade-btn" class="secondary-btn">⇄ <span>MARKET</span></button><button id="policy-btn" class="secondary-btn">⚖ <span>POLICY</span></button><button id="roll-btn" class="roll-btn"><span class="die" id="die-one">⚀</span><span class="die" id="die-two">⚁</span><b>ROLL DICE</b><span class="roll-arrow">↗</span></button></div></div>
-          <div class="portfolio-card"><div class="panel-title"><span class="section-kicker">NATIONAL LEDGER</span><span id="portfolio-health" class="health-pill">● STABLE</span></div><div id="players-list" class="players-list"></div><div class="resilience"><div class="resilience-label"><span>SUPPLY RESILIENCE</span><b id="resilience-value">58%</b></div><div class="meter"><span id="resilience-meter"></span></div><small id="resilience-note">Import exposure is manageable.</small></div></div>
-          <div class="market-strip"><div class="market-title"><span class="section-kicker">WORLD MARKETS</span><span class="market-live"><i></i> OPEN</span></div><div id="market-ticker" class="market-ticker"></div></div>
+          <div class="portfolio-card"><div class="panel-title"><span class="section-kicker">NATIONAL LEDGER</span><span id="portfolio-health" class="health-pill">● STABLE</span></div><div id="players-list" class="players-list"></div><button id="tax-ledger-btn" class="ledger-button">OPEN TAX &amp; CASHFLOW LEDGER ↗</button><div class="resilience"><div class="resilience-label"><span>SUPPLY RESILIENCE</span><b id="resilience-value">58%</b></div><div class="meter"><span id="resilience-meter"></span></div><small id="resilience-note">Import exposure is manageable.</small></div></div>
+          <div class="market-strip"><div class="market-title"><span class="section-kicker">WORLD MARKETS</span><span id="market-live" class="market-live"><i></i> SIMULATED</span></div><div id="market-ticker" class="market-ticker"></div><div id="quote-note" class="quote-note">Game prices are simulated · fetching benchmark…</div></div>
           <div class="log-card"><div class="panel-title"><span class="section-kicker">WIRE / LATEST</span><button id="clear-log" class="clear-btn">CLEAR</button></div><div id="game-log" class="game-log"><p class="log-empty">Your briefings will appear here.</p></div></div>
         </aside>
       </div>
