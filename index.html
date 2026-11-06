@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f1e7d2" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Songtrail — Pocket Wilds</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page-shell">
+    <header class="topline">
+      <a class="wordmark" href="#" aria-label="Songtrail home"><span class="mark">✳</span> POCKET WILDS <span class="edition">FIELD EDITION 01</span></a>
+      <button class="sound-toggle" id="soundToggle" aria-label="Toggle sound" title="Toggle sound">♫ <span>ON</span></button>
+    </header>
+
+    <section class="intro" aria-label="Game introduction">
+      <p class="eyebrow">A LITTLE WORLD THAT GROWS WITH YOU</p>
+      <h1>Follow the <em>Songtrail.</em></h1>
+      <p class="intro-copy">Raise a pocket-sized wildling, wander the red-dirt tracks and find your own kind of brave.</p>
+    </section>
+
+    <section class="game-layout" aria-label="Pocket Wilds game">
+      <div class="device-wrap">
+        <div class="device" id="device">
+          <div class="device-top"><span class="device-name">SONGTRAIL <span>✦</span></span><span class="device-led"><i></i> LINK OK</span></div>
+          <div class="screen-frame">
+            <div class="screen" id="screen">
+              <div class="screen-top"><span id="weather">☀ DRY SEASON</span><span id="clock">DAY 01 · 08:00</span></div>
+              <div class="screen-tabs" id="tabs" role="tablist" aria-label="Game pages"></div>
+              <div id="view" class="view" aria-live="polite"></div>
+              <div class="screen-bottom"><span id="statusLine">A SMALL FRIEND IS WAITING</span><span class="battery"><i></i><i></i><i></i></span></div>
+            </div>
+          </div>
+          <div class="device-controls" aria-label="Handheld controls">
+            <div class="control-hint"><span>PREV</span><span>ACT / OK</span><span>NEXT</span></div>
+            <div class="button-row">
+              <button class="physical-button button-a" id="prevBtn" aria-label="Previous page"><span>◀</span><small>A</small></button>
+              <button class="physical-button button-b" id="actBtn" aria-label="Act or select"><span>●</span><small>B</small></button>
+              <button class="physical-button button-c" id="nextBtn" aria-label="Next page"><span>▶</span><small>C</small></button>
+            </div>
+            <div class="device-footer"><span>3-BUTTON EASY PLAY</span><span>NO CREATURE LEFT BEHIND</span></div>
+          </div>
+        </div>
+        <div class="device-shadow"></div>
+      </div>
+
+      <aside class="side-panel">
+        <div class="panel-heading"><div><p class="eyebrow">YOUR FIELD NOTES</p><h2 id="sideName">Meet your wildling</h2></div><span class="live-dot"></span></div>
+        <div id="fieldNotes" class="field-notes"></div>
+        <div class="guide-card">
+          <div class="guide-icon">⌁</div><div><h3>Three buttons. One big wild.</h3><p><b>A / C</b> move between Home, Care, Trail and Battle. <b>B</b> does the thing on your screen. You can also tap the on-screen action.</p></div>
+        </div>
+        <div class="promise"><span>♡</span><p>Your friend never disappears. Low needs call for a check-in—not a game over.</p></div>
+        <button id="resetBtn" class="reset-link">Start a new field journal <span>↗</span></button>
+      </aside>
+    </section>
+    <footer class="page-footer"><span>MADE FOR SMALL MOMENTS & BIG IMAGINATIONS</span><span>AN ORIGINAL AUSTRALIAN-INSPIRED FICTION</span></footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="game.js"></script>
+</body>
+</html>
