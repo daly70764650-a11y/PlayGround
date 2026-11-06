@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="theme-color" content="#070b11">
+  <title>DEAD CHANNEL — A derelict-ship possession horror</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Dead Channel home"><span class="brand-mark">DC</span><span>DEAD<span class="brand-dim"> CHANNEL</span></span></a>
+      <div class="top-status"><span class="live-dot"></span><span>VESPER-9 // DISTRESS SIGNAL</span><span class="signal">◢◢◢</span></div>
+      <button class="sound-toggle" id="soundToggle" aria-label="Toggle sound">♫ <span>SOUND ON</span></button>
+    </header>
+
+    <section class="game-layout">
+      <aside class="side-panel left-panel">
+        <div class="eyebrow">SHIP SYSTEMS <span>01—03</span></div>
+        <div class="ship-card">
+          <div class="card-label">CURRENT HOST</div>
+          <div class="host-row"><div class="host-icon" id="hostIcon">◈</div><div><h2 id="hostName">WRAITH</h2><p id="hostType">DISCORPOREAL ENTITY</p></div></div>
+          <div class="meter-label"><span>INTEGRITY</span><b id="healthText">100%</b></div><div class="meter"><i id="healthBar"></i></div>
+          <div class="meter-label energy-label"><span>HOST STABILITY</span><b id="energyText">100%</b></div><div class="meter energy-meter"><i id="energyBar"></i></div>
+          <p class="host-note" id="hostNote">Phase through hostile signals. No weapon — stay unseen.</p>
+        </div>
+        <div class="inventory-card">
+          <div class="card-label">FIELD KIT <span>▱</span></div>
+          <div class="inventory-row"><span class="inv-icon key-icon">▣</span><span>ACCESS KEYS</span><b id="keysCount">0 / 3</b></div>
+          <div class="inventory-row"><span class="inv-icon med-icon">✚</span><span>MEDKITS</span><b id="medCount">1</b></div>
+          <div class="inventory-row"><span class="inv-icon ammo-icon">⌁</span><span>CHARGE CELLS</span><b id="ammoCount">∞</b></div>
+        </div>
+        <div class="objective-card"><div class="card-label">MISSION DIRECTIVE</div><div class="objective-icon">⌖</div><div><strong id="objectiveTitle">FIND 3 ACCESS KEYS</strong><p id="objectiveText">Search the decks. Reach the sealed lift.</p></div></div>
+        <div class="floor-mini"><div class="card-label">DECK SCHEMATIC <span id="mapFloor">01</span></div><div id="minimap" class="minimap"></div><div class="map-legend"><i class="legend-you"></i> YOU <i class="legend-hostile"></i> HOSTILE <i class="legend-goal"></i> LIFT</div></div>
+      </aside>
+
+      <div class="play-area">
+        <div class="game-topline"><div><span class="eyebrow">VESPER-9 / SALVAGE VESSEL</span><h1 id="floorName">CARGO DECK <span>01</span></h1></div><div class="mission-clock"><span>SHIP TIME</span><b id="clock">00:00</b></div></div>
+        <div class="canvas-frame" id="canvasFrame">
+          <canvas id="game" width="896" height="576" aria-label="Dead Channel game area"></canvas>
+          <div class="scanlines"></div><div class="vignette"></div>
+          <div class="toast" id="toast"></div>
+          <div class="game-overlay" id="introOverlay">
+            <div class="overlay-content intro-content"><div class="warning-tag"><i></i> SIGNAL FOUND / 14 DAYS OLD</div><h2>DEAD<br><span>CHANNEL</span></h2><p class="intro-sub">THE VESPER-9 ISN'T EMPTY.</p><div class="intro-rule"></div><p class="intro-copy">Something is wearing the crew. You can wear it too.<br>Find the access keys. Reach the bridge. Don't lose yourself.</p><button class="primary-btn" id="startButton">BOARD THE VESPER <span>↗</span></button><div class="control-hint">WASD / ARROWS MOVE <b>·</b> MOUSE AIM <b>·</b> CLICK / SPACE FIRE <b>·</b> E POSSESS <b>·</b> Q EJECT <b>·</b> H MEDKIT</div></div>
+          </div>
+          <div class="game-overlay hidden" id="hackOverlay"><div class="hack-panel"><div class="eyebrow">NEURAL OVERRIDE / HOSTILE SIGNAL</div><h2>BREAK THE<br><span>CONNECTION</span></h2><p id="hackPrompt">Match the pulse sequence to take this host.</p><div class="pulse-sequence" id="pulseSequence"></div><div class="hack-inputs"><button data-pulse="0">←</button><button data-pulse="1">↑</button><button data-pulse="2">↓</button><button data-pulse="3">→</button></div><p class="hack-foot">KEYBOARD: ARROW KEYS <b>·</b> FAILING THE LINK HURTS YOU</p></div></div>
+          <div class="game-overlay hidden" id="endOverlay"><div class="overlay-content end-content"><div class="warning-tag" id="endTag"><i></i> SIGNAL LOST</div><h2 id="endTitle">HOST<br><span>COLLAPSED</span></h2><p class="intro-copy" id="endCopy">Your borrowed body gave out.</p><button class="primary-btn" id="restartButton">RESTART DESCENT <span>↻</span></button></div></div>
+        </div>
+        <div class="game-bottomline"><div class="status-message"><i class="status-icon">◉</i><span id="statusText">Awaiting insertion protocol...</span></div><div class="floor-progress"><span>DECK</span><div class="progress-dots"><i class="active"></i><i></i><i></i></div><span id="deckCounter">01 / 03</span></div></div>
+        <div class="touch-controls" aria-label="Touch controls"><div class="dpad"><button data-move="up">▲</button><div><button data-move="left">◀</button><button data-move="down">▼</button><button data-move="right">▶</button></div></div><div class="touch-actions"><button id="touchSwap">E<br><small>LINK</small></button><button id="touchFire">✦<br><small>FIRE</small></button></div></div>
+      </div>
+
+      <aside class="side-panel right-panel">
+        <div class="eyebrow">VESPER-9 <span>STATUS</span></div>
+        <div class="signal-card"><div class="signal-head"><span>HULL PRESSURE</span><b>CRITICAL</b></div><div class="pressure-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="pressure-readout">0.18 <small>ATM</small><span>— NO RESCUE INBOUND</span></div></div>
+        <div class="crew-card"><div class="card-label">CREW MANIFEST <span>4 / 87</span></div><div class="crew-person"><span class="crew-avatar avatar-1">◉</span><div><b>DR. SATO</b><small>MEDICAL / DECK 02</small></div><span class="crew-state lost">LOST</span></div><div class="crew-person"><span class="crew-avatar avatar-2">◈</span><div><b>CHIEF ROURKE</b><small>ENGINEERING / DECK 03</small></div><span class="crew-state unknown">?</span></div><div class="crew-person"><span class="crew-avatar avatar-3">⊙</span><div><b>UNIT K-17</b><small>SECURITY / DECK 01</small></div><span class="crew-state active">ACTIVE</span></div><div class="crew-person"><span class="crew-avatar avatar-4">◌</span><div><b>UNREGISTERED</b><small>UNKNOWN / DECK 03</small></div><span class="crew-state lost">LOST</span></div></div>
+        <div class="log-card"><div class="card-label">BLACK BOX TRANSCRIPT <span>LIVE</span></div><div class="log-lines" id="logLines"><p><time>02:14</time> <span>—</span> Signal detected.</p><p><time>02:15</time> <span>—</span> Crew channel silent.</p><p><time>02:16</time> <span>—</span> Something moved.</p></div></div>
+        <div class="warning-card"><span>!</span><p><b>HOST INSTABILITY</b><br>Possessed bodies decay. Find another host before yours burns out.</p></div>
+      </aside>
+    </section>
+    <footer><span>DEAD CHANNEL <b>·</b> AN ORIGINAL SHIPBOARD HORROR</span><span>NO WAY OUT <b>·</b> NO ONE LEFT TO CALL</span><span>BUILD 0.9.4 <b>·</b> BLACK BOX ACTIVE</span></footer>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
